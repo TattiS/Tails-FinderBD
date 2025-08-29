@@ -1,16 +1,14 @@
 import { Router } from 'express';
-import recipesRouter from './recipes.js';
+import advertsRouter from './adverts.js';
 import authRouter from './auth.js';
 import usersRouter from './users.js';
-import ingredientsRouter from './ingredient.js';
-import categoriesRouter from './category.js';
+import filtersRouter from './filters.js';
 
 const router = Router();
 
-router.use('/recipes', recipesRouter);
+router.use('/adverts', advertsRouter);
 router.use('/auth', authRouter);
 router.use('/users', usersRouter);
-router.use('/ingredients', ingredientsRouter);
-router.use('/categories', categoriesRouter);
+router.use('/filters', filtersRouter);
 
 export default router;
