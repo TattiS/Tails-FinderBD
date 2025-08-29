@@ -1,6 +1,6 @@
 import { Advert } from '../models/advertSchema.js';
 
-export const findMatchingAdverts = async (advert) => {
+export const findMatchingAdvertsService = async (advert) => {
   const oppositeType = advert.type === 'lost' ? 'found' : 'lost';
 
   if (!advert.location?.coordinates) {
@@ -13,6 +13,7 @@ export const findMatchingAdverts = async (advert) => {
     type: oppositeType,
     species: advert.species,
     colors: { $in: advert.colors },
+    archived: false,
     _id: { $ne: advert._id }, // виключаємо саме це оголошення
     location: {
       $nearSphere: {
@@ -20,7 +21,7 @@ export const findMatchingAdverts = async (advert) => {
           type: 'Point',
           coordinates: [longitude, latitude],
         },
-        $maxDistance: 15000, // 15 км
+        $maxDistance: 3000, // 3 км
       },
     },
   }).populate('user', 'name email notificationsAllowed');

@@ -1,6 +1,6 @@
 import { sendEmail } from '../utils/sendEmails.js';
 
-export const notifyUsers = async (matches, advert) => {
+export const notifyUsersService = async (matches, advert) => {
   if (!matches?.length) return;
 
   const link = `${process.env.FRONTEND_URL}/adverts/${advert._id}`;
@@ -8,7 +8,6 @@ export const notifyUsers = async (matches, advert) => {
   for (const match of matches) {
     const { user } = match;
 
-    // Пропускаємо, якщо нема користувача або він відключив повідомлення
     if (!user || !user.notificationsAllowed) continue;
 
     const subject =

@@ -4,14 +4,14 @@ import {
   createAdvertService,
   updateAdvertService,
 } from '../services/adverts.js';
-import { findMatchingAdverts } from '../services/matchingAdvert.js';
-import { notifyUsers } from '../services/notification.js';
+import { findMatchingAdvertsService } from '../services/matchingAdvert.js';
+import { notifyUsersService } from '../services/notification.js';
 
 // GET /adverts?status=lost&species=dog&page=1&limit=10
 export const getAdvertsController = async (req, res) => {
   const { page = 1, limit = 20, ...filters } = req.query;
 
-  // Фільтруємо status, species, colors, city тощо за потреби
+  // Фільтруємо status, species, colors, city
   const filter = { ...filters };
 
   const result = await getAdvertsService(filter, {
@@ -44,10 +44,10 @@ export const createAdvertController = async (req, res) => {
   data.user = req.user._id; // автор з authenticate
 
   const newAdvert = await createAdvertService(data);
-  const matches = await findMatchingAdverts(newAdvert);
+  const matches = await findMatchingAdvertsService(newAdvert);
 
   if (matches.length > 0) {
-    await notifyUsers(matches, newAdvert);
+    await notifyUsersService(matches, newAdvert);
   }
   res.status(201).json({
     status: 201,
