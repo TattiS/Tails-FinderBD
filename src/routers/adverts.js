@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { authenticate } from '../middlewares/authenticate.js';
+import { upload } from '../middlewares/multer.js';
+import { parseJsonFields } from '../middlewares/parseJsonFields.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import {
   createAdvertSchema,
@@ -11,9 +13,13 @@ import {
   updateAdvertController,
   getAdvertsController,
   getAdvertByIdController,
+  getLatestAdvertsController,
 } from '../controllers/adverts.js';
 
 const router = Router();
+
+// GET оголошення для старту
+router.get('/start', ctrlWrapper(getLatestAdvertsController));
 
 // GET всі оголошення
 router.get('/', ctrlWrapper(getAdvertsController));
@@ -25,6 +31,8 @@ router.get('/:id', ctrlWrapper(getAdvertByIdController));
 router.post(
   '/',
   authenticate,
+  upload.array('photos', 4),
+  parseJsonFields(['animal', 'context']),
   validateBody(createAdvertSchema),
   ctrlWrapper(createAdvertController),
 );
@@ -33,6 +41,8 @@ router.post(
 router.patch(
   '/:id',
   authenticate,
+  upload.array('photos', 4),
+  parseJsonFields(['animal', 'context']),
   validateBody(updateAdvertSchema),
   ctrlWrapper(updateAdvertController),
 );
