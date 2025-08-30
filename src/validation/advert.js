@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { SPECIES, COLORS, SEX, SIZE } from '../constants/animalEnums.js';
 
 // Для валідації координат GeoJSON при створенні нового оголошення
 const coordinatesSchema = Joi.object({
@@ -17,17 +18,21 @@ export const createAdvertSchema = Joi.object({
   photos: Joi.array().items(Joi.string().uri()).min(1).required(),
   status: Joi.string().valid('found', 'lost').required(),
   animal: Joi.object({
-    species: Joi.string().required(),
+    species: Joi.string()
+      .valid(...SPECIES)
+      .required(),
     breed: Joi.string().allow(''),
     colors: Joi.array()
-      .items(Joi.string().valid('red', 'green', 'blue', 'other'))
+      .items(Joi.string().valid(...COLORS))
       .min(1)
       .required(),
-    sex: Joi.string().valid('male', 'female', 'unknown').default('unknown'),
+    sex: Joi.string()
+      .valid(...SEX)
+      .default('інше'),
     age: Joi.string().allow(''),
     size: Joi.string()
-      .valid('small', 'medium', 'large', 'unknown')
-      .default('unknown'),
+      .valid(...SIZE)
+      .default('інше'),
     features: Joi.string().allow(''),
   }).required(),
   context: Joi.object({
@@ -46,28 +51,34 @@ export const createAdvertSchema = Joi.object({
 
 // Для валідації при оновленні оголошення
 export const updateAdvertSchema = Joi.object({
-  photos: Joi.array().items(Joi.string().uri()).min(1),
-  status: Joi.string().valid('found', 'lost'),
+  photos: Joi.array().items(Joi.string().uri()).min(1).optional(),
+  status: Joi.string().valid('found', 'lost').optional(),
   animal: Joi.object({
-    species: Joi.string(),
-    breed: Joi.string().allow(''),
-    colors: Joi.array().items(
-      Joi.string().valid('red', 'green', 'blue', 'other'),
-    ),
-    sex: Joi.string().valid('male', 'female', 'unknown'),
-    age: Joi.string().allow(''),
-    size: Joi.string().valid('small', 'medium', 'large', 'unknown'),
-    features: Joi.string().allow(''),
-  }),
+    species: Joi.string()
+      .valid(...SPECIES)
+      .optional(),
+    breed: Joi.string().allow('').optional(),
+    colors: Joi.array()
+      .items(Joi.string().valid(...COLORS))
+      .optional(),
+    sex: Joi.string()
+      .valid(...SEX)
+      .optional(),
+    age: Joi.string().allow('').optional(),
+    size: Joi.string()
+      .valid(...SIZE)
+      .optional(),
+    features: Joi.string().allow('').optional(),
+  }).optional(),
   context: Joi.object({
     location: Joi.object({
-      coordinates: updateCoordinatesSchema,
-      city: Joi.string(),
-      district: Joi.string().allow(''),
-      address: Joi.string().allow(''),
-    }),
-    date: Joi.date(),
-    description: Joi.string().allow(''),
-  }),
-  archived: Joi.boolean(),
+      coordinates: updateCoordinatesSchema.optional(),
+      city: Joi.string().optional(),
+      district: Joi.string().allow('').optional(),
+      address: Joi.string().allow('').optional(),
+    }).optional(),
+    date: Joi.date().optional(),
+    description: Joi.string().allow('').optional(),
+  }).optional(),
+  archived: Joi.boolean().optional(),
 });
