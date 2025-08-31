@@ -1,30 +1,42 @@
 import { Advert } from '../models/advertSchema.js';
 
 export const findMatchingAdvertsService = async (advert) => {
-  const oppositeType = advert.type === 'lost' ? 'found' : 'lost';
+  const oppositeType = advert.status === 'lost' ? 'found' : 'lost';
 
-  if (!advert.location?.coordinates) {
+  if (!advert.context?.location?.coordinates?.coordinates) {
     return []; // якщо немає координат — пошук неможливий
   }
 
-  const [longitude, latitude] = advert.location.coordinates;
+  const [longitude, latitude] = advert.context.location.coordinates.coordinates;
 
-  const matchedAdverts = await Advert.find({
-    type: oppositeType,
-    species: advert.species,
-    colors: { $in: advert.colors },
+  // Знаходимо потенційні збіги за базовими критеріями
+  const potentialMatches = await Advert.find({
+    status: oppositeType,
+    'animal.species': advert.animal.species,
+    'animal.colors': { $in: advert.animal.colors },
     archived: false,
-    _id: { $ne: advert._id }, // виключаємо саме це оголошення
+    _id: { $ne: advert._id },
     location: {
       $nearSphere: {
-        $geometry: {
-          type: 'Point',
-          coordinates: [longitude, latitude],
-        },
+        $geometry: { type: 'Point', coordinates: [longitude, latitude] },
         $maxDistance: 3000, // 3 км
       },
     },
   }).populate('user', 'name email notificationsAllowed');
 
-  return matchedAdverts;
+  if (!advert.tags || advert.tags.length === 0) {
+    return potentialMatches;
+  }
+
+  const matchesWithScore = potentialMatches.map((match) => {
+    const commonTags = match.tags.filter((tag) => advert.tags.includes(tag));
+    return {
+      advert: match,
+      score: commonTags.length,
+    };
+  });
+
+  matchesWithScore.sort((a, b) => b.score - a.score);
+
+  return matchesWithScore.map((item) => item.advert);
 };

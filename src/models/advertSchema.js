@@ -8,6 +8,7 @@ const advertSchema = new Schema(
       required: true,
       validate: [(val) => val.length > 0, 'At least one photo is required'],
     },
+    tags: { type: [String], default: [] },
     status: {
       type: String,
       enum: ['found', 'lost'],
