@@ -6,6 +6,7 @@ import {
   createAdvertService,
   updateAdvertService,
 } from '../services/adverts.js';
+import { addAdvertToUserService } from '../services/user.js';
 import { findMatchingAdvertsService } from '../services/matchingAdvert.js';
 import { notifyUsersService } from '../services/notification.js';
 
@@ -97,6 +98,8 @@ export const createAdvertController = async (req, res) => {
   data.user = req.user._id; // автор з authenticate
 
   const newAdvert = await createAdvertService(data, req.files || []);
+
+  await addAdvertToUserService(req.user._id, newAdvert._id);
 
   const matches = await findMatchingAdvertsService(newAdvert);
   if (matches.length > 0) {

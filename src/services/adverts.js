@@ -3,6 +3,7 @@ import { Advert } from '../models/advertSchema.js';
 import NotFound from 'http-errors';
 import mongoose from 'mongoose';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { getImageTags } from './vision.js';
 
 // Отримати всі оголошення (з фільтрами та пагінацією)
 export const getAdvertsService = async (filter, options = {}) => {
@@ -59,6 +60,18 @@ export const createAdvertService = async (data, files = []) => {
       .map((res) => res.value);
 
     data.photos = photosUrls;
+
+    // Аналіз фото через Vision API паралельно
+    const tagsResults = await Promise.allSettled(
+      files.map((file) => getImageTags(file.path)),
+    );
+
+    const tagsSet = new Set();
+    tagsResults
+      .filter((res) => res.status === 'fulfilled')
+      .forEach((res) => res.value.forEach((tag) => tagsSet.add(tag)));
+
+    data.tags = Array.from(tagsSet);
   }
 
   const newAdvert = await Advert.create(data);
@@ -91,6 +104,21 @@ export const updateAdvertService = async (id, data, files = []) => {
     const advert = await Advert.findById(id);
     if (!advert) throw new NotFound('Advert not found');
     data.photos = [...(advert.photos || []), ...photosUrls];
+
+    // Аналіз фото через Vision API паралельно
+    const tagsResults = await Promise.allSettled(
+      files.map((file) => getImageTags(file.path)),
+    );
+    const tags = tagsResults
+      .filter((res) => res.status === 'fulfilled')
+      .flatMap((res) => res.value);
+
+    const updatedTags = new Set([
+      ...(advert.tags || []),
+      ...(data.tags || []),
+      ...tags,
+    ]);
+    data.tags = Array.from(updatedTags);
   }
 
   const updatedAdvert = await Advert.findByIdAndUpdate(id, data, { new: true });

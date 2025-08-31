@@ -16,6 +16,7 @@ const updateCoordinatesSchema = Joi.object({
 // Для валідації при створенні нового оголошення
 export const createAdvertSchema = Joi.object({
   photos: Joi.array().items(Joi.string().uri()).min(1).required(),
+  tags: Joi.array().items(Joi.string()).optional(),
   status: Joi.string().valid('found', 'lost').required(),
   animal: Joi.object({
     species: Joi.string()
@@ -43,7 +44,7 @@ export const createAdvertSchema = Joi.object({
       address: Joi.string().allow(''),
     }).required(),
     date: Joi.date().required(),
-    description: Joi.string().allow(''),
+    description: Joi.string().max(1000).allow(''),
   }).required(),
   user: Joi.string().hex().length(24).required(),
   archived: Joi.boolean().default(false),
@@ -52,6 +53,7 @@ export const createAdvertSchema = Joi.object({
 // Для валідації при оновленні оголошення
 export const updateAdvertSchema = Joi.object({
   photos: Joi.array().items(Joi.string().uri()).min(1).optional(),
+  tags: Joi.array().items(Joi.string()).optional(),
   status: Joi.string().valid('found', 'lost').optional(),
   animal: Joi.object({
     species: Joi.string()
@@ -78,7 +80,7 @@ export const updateAdvertSchema = Joi.object({
       address: Joi.string().allow('').optional(),
     }).optional(),
     date: Joi.date().optional(),
-    description: Joi.string().allow('').optional(),
+    description: Joi.string().max(1000).allow('').optional(),
   }).optional(),
   archived: Joi.boolean().optional(),
-});
+}).min(1);

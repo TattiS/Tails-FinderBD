@@ -22,3 +22,19 @@ export const updateUserService = async (userId, payload) => {
 
   return updatedUser;
 };
+
+export const addAdvertToUserService = async (userId, advertId) => {
+  if (!mongoose.isValidObjectId(userId)) {
+    throw createHttpError(400, 'Invalid user ID');
+  }
+  if (!mongoose.isValidObjectId(advertId)) {
+    throw createHttpError(400, 'Invalid advert ID');
+  }
+
+  const updatedUser = await UsersCollection.findByIdAndUpdate(
+    userId,
+    { $push: { ads: advertId } },
+    { new: true },
+  );
+  return updatedUser;
+};
