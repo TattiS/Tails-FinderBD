@@ -13,13 +13,9 @@ import {
   updateAdvertController,
   getAdvertsController,
   getAdvertByIdController,
-  getLatestAdvertsController,
 } from '../controllers/adverts.js';
 
 const router = Router();
-
-// GET оголошення для старту
-router.get('/start', ctrlWrapper(getLatestAdvertsController));
 
 // GET всі оголошення
 router.get('/', ctrlWrapper(getAdvertsController));
