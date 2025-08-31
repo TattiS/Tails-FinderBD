@@ -1,0 +1,107 @@
+operationId: updateUserService
+summary: Update current authenticated user
+tags:
+  - Users
+description: Updates the authenticated user's data. Only the fields provided in the request body will be updated. Requires authentication.
+security:
+  - bearerAuth: []   # якщо використовується JWT
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            minLength: 2
+            maxLength: 50
+            example: "Jane Doe"
+            description: User's name
+          email:
+            type: string
+            format: email
+            example: "jane.doe@example.com"
+            description: User's email
+          phone:
+            type: string
+            example: "+380931234567"
+            description: User's phone number
+          messengers:
+            type: array
+            items:
+              type: string
+            example: ["telegram", "viber"]
+            description: List of messenger apps
+          notificationsAllowed:
+            type: boolean
+            example: true
+            description: Whether the user allows notifications
+responses:
+  '200':
+    description: Successfully updated user
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully updated user!
+            data:
+              $ref: '../../components/schemas/user.yaml'
+  '400':
+    description: Invalid input data
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: Invalid user data
+  '401':
+    description: Unauthorized - user not authenticated
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 401
+            message:
+              type: string
+              example: Unauthorized
+  '404':
+    description: User not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: User not found
+  '500':
+    description: Internal server error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 500
+            message:
+              type: string
+              example: 'Internal server error: Database connection failed'

@@ -1,0 +1,166 @@
+operationId: updateAdvertService
+summary: Update an existing animal advert
+tags:
+  - AnimalAds
+description: Updates an existing animal advert by its ID. Only the provided fields will be updated. Supports updating photos (multipart/form-data). Requires authentication.
+security:
+  - bearerAuth: []   # якщо використовується JWT
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: 665d14a36a70b4794fbcab12
+    description: The ID of the advert to update
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          photos:
+            type: array
+            items:
+              type: string
+              format: binary
+            description: One or more new photos of the animal
+          tags:
+            type: array
+            items:
+              type: string
+            example: ["blackFur", "whiteEar"]
+          status:
+            type: string
+            enum: [found, lost]
+            example: "found"
+          animal:
+            type: object
+            properties:
+              species:
+                type: string
+                example: cat
+              breed:
+                type: string
+                example: siamese
+              colors:
+                type: array
+                items:
+                  type: string
+                  example: white
+              sex:
+                type: string
+                enum: [самець, самка, інше]
+                example: самець
+              age:
+                type: string
+                example: 3 роки
+              size:
+                type: string
+                enum: [малий, середній, великий, інше]
+                example: малий
+              features:
+                type: string
+                example: "Має зелену нашийну стрічку"
+          context:
+            type: object
+            properties:
+              location:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum: [Point]
+                    example: Point
+                  coordinates:
+                    type: array
+                    description: "[longitude, latitude]"
+                    items:
+                      type: number
+                    example: [30.5234, 50.4501]
+                  city:
+                    type: string
+                    example: Київ
+                  district:
+                    type: string
+                    example: Шевченківський
+                  address:
+                    type: string
+                    example: "вул. Хрещатик, 12"
+              date:
+                type: string
+                format: date-time
+                example: 2024-07-01T12:00:00.000Z
+              description:
+                type: string
+                maxLength: 1000
+                example: "Кота бачили біля магазину."
+responses:
+  '200':
+    description: Advert successfully updated
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Advert successfully updated!
+            data:
+              $ref: '../../../components/schemas/advert.yaml'
+  '400':
+    description: Invalid advert ID format or bad request data
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: Invalid advert ID format
+  '401':
+    description: Unauthorized - user not authenticated
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 401
+            message:
+              type: string
+              example: Unauthorized
+  '404':
+    description: Advert not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: Advert not found
+  '500':
+    description: Internal server error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 500
+            message:
+              type: string
+              example: 'Internal server error: Database connection failed'

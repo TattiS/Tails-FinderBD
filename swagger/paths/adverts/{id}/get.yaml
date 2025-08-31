@@ -1,0 +1,66 @@
+operationId: getAdvertByIdService
+summary: Retrieve an animal ad by ID
+tags:
+  - AnimalAds
+description: Returns a single animal ad by its ID. If the ID is invalid, a 400 error is returned. If the advert does not exist, a 404 error is returned.
+security: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: 665d14a36a70b4794fbcab12
+    description: The ID of the advert to retrieve
+responses:
+  '200':
+    description: Successfully retrieved the advert
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            data:
+              $ref: '../../../components/schemas/advert.yaml'
+  '400':
+    description: Invalid advert ID format
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: Invalid advert ID format
+  '404':
+    description: Advert not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: Advert not found
+  '500':
+    description: Internal server error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 500
+            message:
+              type: string
+              example: 'Internal server error: Database connection failed'

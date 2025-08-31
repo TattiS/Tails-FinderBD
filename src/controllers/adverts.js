@@ -23,6 +23,7 @@ export const getLatestAdvertsController = async (req, res) => {
 
   res.status(200).json({
     status: 200,
+    message: 'Successfully found animal ads!',
     data: adverts,
   });
 };
