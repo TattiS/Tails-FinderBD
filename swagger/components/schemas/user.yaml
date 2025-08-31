@@ -7,17 +7,42 @@ required:
   - updatedAt
 properties:
   _id:
-    description: User's id
+    description: User's unique identifier
     type: string
     example: 65e4decdd286b30065d54af9
   name:
     description: User's name
     type: string
+    minLength: 2
+    maxLength: 50
     example: John Doe
   email:
     description: User's email
     type: string
+    format: email
     example: john123@gmail.com
+  phone:
+    description: User's phone number
+    type: string
+    example: "+380931234567"
+  messengers:
+    description: List of messengers where user can be contacted
+    type: array
+    items:
+      type: string
+      example: "telegram"
+    example: ["telegram", "viber"]
+  ads:
+    description: List of user's adverts (ObjectIds)
+    type: array
+    items:
+      type: string
+      example: "665d14a36a70b4794fbcab12"
+  notificationsAllowed:
+    description: Whether the user allows notifications
+    type: boolean
+    default: true
+    example: true
   createdAt:
     type: string
     format: date-time

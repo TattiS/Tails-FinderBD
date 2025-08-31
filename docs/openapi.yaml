@@ -1,27 +1,27 @@
 openapi: 3.1.0
 info:
   version: 1.0.0
-  title: Byte&Bite-v2.0 app
+  title: Tails-FinderBD
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   description: >
-    A RESTful API for managing recipes.
+    A RESTful API for managing animal adverts.
     Supports user registration, authentication,
-    and password reset via email.
+    managing adverts, filters, and enum options.
 tags:
-  - name: Categories
-    description: Operations about categories.
-  - name: Ingredients
-    description: Operations about ingredients.
-  - name: Recipes
-    description: Operations about recipes.
+  - name: AnimalAds
+    description: Operations about animal adverts
+  - name: Users
+    description: Operations about Users.
+  - name: Filters
+    description: Operations about Filters.
   - name: Auth
     description: Auth operations.
-  - name: Users
-    description: Operations about users.
+  - name: Enums
+    description: Retrieve enum options for adverts.
 servers:
-  - url: https://byte-bite-v2-0.onrender.com/api
+  - url: https://tails-finderbd.onrender.com/api
     description: Production server
   - url: http://127.0.0.1:3000/api
     description: Local server
@@ -38,37 +38,35 @@ paths:
   /auth/refresh:
     post:
       $ref: ../swagger/paths/auth/refresh.yaml
+
   /users/current:
     get:
-      $ref: ../swagger/paths/users/get.yaml
-  /categories:
+      $ref: ../swagger/paths/users/current/get.yaml
+  /users:
+    patch:
+      $ref: ../swagger/paths/users/patch.yaml
+
+  /adverts:
     get:
-      $ref: ../swagger/paths/categories/get.yaml
-  /ingredients:
-    get:
-      $ref: ../swagger/paths/ingredients/get.yaml
-  /recipes:
-    get:
-      $ref: ../swagger/paths/recipes/get.yaml
+      $ref: ../swagger/paths/adverts/get.yaml
     post:
-      $ref: ../swagger/paths/recipes/post.yaml
-  /recipes/{id}:
+      $ref: ../swagger/paths/adverts/post.yaml
+  /adverts/start:
     get:
-      $ref: ../swagger/paths/recipes/{id}/get.yaml
-  /recipes/profile/own:
+      $ref: ../swagger/paths/adverts/start/get.yaml
+  /adverts/{id}:
     get:
-      $ref: ../swagger/paths/recipes/profile/own/get.yaml
-  /recipes/profile/own/{id}:
-    delete:
-      $ref: ../swagger/paths/recipes/profile/own/{id}/delete.yaml
-  /recipes/profile/favorites:
+      $ref: ../swagger/paths/adverts/id-get.yaml
+    patch:
+      $ref: ../swagger/paths/adverts/id-patch.yaml
+
+  /filters:
     get:
-      $ref: ../swagger/paths/recipes/profile/favorites/get.yaml
-    post:
-      $ref: ../swagger/paths/recipes/profile/favorites/post.yaml
-  /recipes/profile/favorites/{id}:
-    delete:
-      $ref: ../swagger/paths/recipes/profile/favorites/{id}/delete.yaml
+      $ref: ../swagger/paths/filters/get.yaml
+  /enums:
+    get:
+      $ref: ../swagger/paths/enums/get.yaml
+
 components:
   securitySchemes:
     bearerAuth:

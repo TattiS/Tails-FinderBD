@@ -1,0 +1,57 @@
+operationId: getEnumOptionsService
+summary: Retrieve enum options for animal adverts
+tags:
+  - Enums
+description: Returns available enum options for animal adverts, including species, colors, sex, size, and advert status.
+security: []
+responses:
+  '200':
+    description: Successfully retrieved enum options
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            species:
+              type: array
+              items:
+                type: string
+              example: ["dog", "cat", "rabbit"]
+              description: List of available animal species
+            colors:
+              type: array
+              items:
+                type: string
+              example: ["black", "white", "brown"]
+              description: List of available colors
+            sex:
+              type: array
+              items:
+                type: string
+              example: ["самець", "самка", "інше"]
+              description: List of possible sex values
+            size:
+              type: array
+              items:
+                type: string
+              example: ["малий", "середній", "великий", "інше"]
+              description: List of possible sizes
+            status:
+              type: array
+              items:
+                type: string
+              example: ["found", "lost"]
+              description: List of possible advert statuses
+  '500':
+    description: Internal server error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 500
+            message:
+              type: string
+              example: 'Internal server error: Database connection failed'

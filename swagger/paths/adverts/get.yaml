@@ -1,0 +1,130 @@
+operationId: getAdvertsService
+summary: Retrieve all animal ads with filters, pagination and sorting
+tags:
+  - AnimalAds
+description: Returns a paginated array of animal ads. Supports filtering by archived status, advert status, species, colors, city, and district. Results can also be sorted by specific fields. If no ads are found, a 404 error is returned.
+security: []
+parameters:
+  - in: query
+    name: page
+    schema:
+      type: integer
+      minimum: 1
+      default: 1
+    description: Page number for pagination
+  - in: query
+    name: perPage
+    schema:
+      type: integer
+      minimum: 1
+      default: 20
+    description: Number of results per page
+  - in: query
+    name: sortBy
+    schema:
+      type: string
+      enum: [createdAt, updatedAt]
+      default: createdAt
+    description: Field to sort results by
+  - in: query
+    name: sortOrder
+    schema:
+      type: string
+      enum: [asc, desc]
+      default: desc
+    description: Sort order (ascending or descending)
+  - in: query
+    name: archived
+    schema:
+      type: boolean
+    description: Filter by archived status (true/false)
+  - in: query
+    name: status
+    schema:
+      type: string
+      enum: [found, lost]
+    description: Filter by advert status (found/lost)
+  - in: query
+    name: species
+    schema:
+      type: string
+      example: dog
+    description: Filter by animal species
+  - in: query
+    name: colors
+    schema:
+      type: string
+      example: black,white
+    description: Filter by animal colors. Multiple colors can be passed, separated by commas.
+  - in: query
+    name: city
+    schema:
+      type: string
+      example: Київ
+    description: Filter by city
+  - in: query
+    name: district
+    schema:
+      type: string
+      example: Оболонський
+    description: Filter by district
+responses:
+  '200':
+    description: Successfully retrieved the list of animal ads
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            data:
+              type: array
+              items:
+                $ref: '../../components/schemas/advert.yaml'
+            pagination:
+              type: object
+              properties:
+                total:
+                  type: integer
+                  example: 120
+                  description: Total number of adverts matching filters
+                page:
+                  type: integer
+                  example: 1
+                  description: Current page number
+                perPage:
+                  type: integer
+                  example: 20
+                  description: Number of results per page
+                totalPages:
+                  type: integer
+                  example: 6
+                  description: Total number of pages
+  '404':
+    description: No animal ads found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: No animal ads found
+  '500':
+    description: Internal server error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 500
+            message:
+              type: string
+              example: 'Internal server error: Database connection failed'

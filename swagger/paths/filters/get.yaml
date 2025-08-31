@@ -1,0 +1,57 @@
+operationId: getFilterOptionsService
+summary: Retrieve available filter options for adverts
+tags:
+  - Filters
+description: Returns available filter options for animal adverts. Includes lists of unique cities, districts, animal species, and advert statuses. Only non-archived adverts are considered.
+security: []
+responses:
+  '200':
+    description: Successfully retrieved filter options
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            data:
+              type: object
+              properties:
+                cities:
+                  type: array
+                  items:
+                    type: string
+                  example: ["Київ", "Львів", "Одеса"]
+                  description: List of unique cities
+                districts:
+                  type: array
+                  items:
+                    type: string
+                  example: ["Оболонський", "Шевченківський"]
+                  description: List of unique districts
+                species:
+                  type: array
+                  items:
+                    type: string
+                  example: ["dog", "cat", "rabbit"]
+                  description: List of unique animal species
+                status:
+                  type: array
+                  items:
+                    type: string
+                  example: ["found", "lost"]
+                  description: List of unique advert statuses
+  '500':
+    description: Internal server error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 500
+            message:
+              type: string
+              example: 'Internal server error: Database connection failed'

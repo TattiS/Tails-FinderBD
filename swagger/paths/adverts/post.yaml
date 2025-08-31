@@ -1,0 +1,160 @@
+operationId: createAdvertService
+summary: Create a new animal advert
+tags:
+  - AnimalAds
+description: Creates a new animal advert for a found or lost animal. Requires authentication. Photos are uploaded as files. After creation, the advert is linked to the user and possible matches may trigger notifications to other users.
+security:
+  - bearerAuth: []   # якщо є JWT auth
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - photos
+          - status
+          - animal
+          - context
+        properties:
+          photos:
+            type: array
+            items:
+              type: string
+              format: binary
+            description: One or more photos of the animal
+          tags:
+            type: array
+            items:
+              type: string
+            example: ["blackFur", "whiteEar"]
+          status:
+            type: string
+            enum: [found, lost]
+            example: "lost"
+          animal:
+            type: object
+            required:
+              - species
+              - colors
+            properties:
+              species:
+                type: string
+                example: dog
+              breed:
+                type: string
+                example: labrador
+              colors:
+                type: array
+                items:
+                  type: string
+                  example: black
+              sex:
+                type: string
+                enum: [самець, самка, інше]
+                example: самка
+              age:
+                type: string
+                example: 2 роки
+              size:
+                type: string
+                enum: [малий, середній, великий, інше]
+                example: середній
+              features:
+                type: string
+                example: "Має червону хустку"
+          context:
+            type: object
+            required:
+              - location
+              - date
+            properties:
+              location:
+                type: object
+                required:
+                  - type
+                  - coordinates
+                  - city
+                properties:
+                  type:
+                    type: string
+                    enum: [Point]
+                    example: Point
+                  coordinates:
+                    type: array
+                    description: "[longitude, latitude]"
+                    items:
+                      type: number
+                    example: [30.5234, 50.4501]
+                  city:
+                    type: string
+                    example: Київ
+                  district:
+                    type: string
+                    example: Оболонський
+                  address:
+                    type: string
+                    example: "вул. Грушевського, 1"
+              date:
+                type: string
+                format: date-time
+                example: 2024-06-01T12:00:00.000Z
+              description:
+                type: string
+                maxLength: 1000
+                example: "Собака загубився біля парку. Дуже дружній."
+responses:
+  '201':
+    description: Advert successfully created
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Advert successfully created!
+            data:
+              $ref: '../../components/schemas/advert.yaml'
+  '400':
+    description: Invalid input data
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: Invalid advert data
+  '401':
+    description: Unauthorized - user not authenticated
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 401
+            message:
+              type: string
+              example: Unauthorized
+  '500':
+    description: Internal server error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 500
+            message:
+              type: string
+              example: 'Internal server error: Database connection failed'

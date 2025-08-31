@@ -1,12 +1,12 @@
-operationId: getIngredients
-summary: Retrieve a list of ingredients
+operationId: getLatestAdvertsService
+summary: Retrieve latest 6 animal ads
 tags:
-  - Ingredients
-description: Returns an array of ingredients. Returns 404 if no ingredients found.
+  - AnimalAds
+description: Returns the latest 6 animal ads sorted by creation date (descending). Each ad contains information about found or missing animals. If no ads are found, a 404 error is returned.
 security: []
 responses:
   '200':
-    description: Successfully retrieved list of ingredients
+    description: Successfully retrieved the latest 6 animal ads
     content:
       application/json:
         schema:
@@ -17,13 +17,14 @@ responses:
               example: 200
             message:
               type: string
-              example: Successfully found ingredients!
+              example: Successfully found latest animal ads!
             data:
               type: array
+              maxItems: 6
               items:
-                $ref: '../../components/schemas/ingredient.yaml'
+                $ref: '../../../components/schemas/advert.yaml'
   '404':
-    description: Ingredients not found
+    description: No animal ads found
     content:
       application/json:
         schema:
@@ -34,7 +35,7 @@ responses:
               example: 404
             message:
               type: string
-              example: No ingredients found
+              example: No animal ads found
   '500':
     description: Internal server error
     content:
