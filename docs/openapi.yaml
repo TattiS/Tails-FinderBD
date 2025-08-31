@@ -39,12 +39,14 @@ paths:
     post:
       $ref: ../swagger/paths/auth/refresh.yaml
 
+
   /users/current:
     get:
       $ref: ../swagger/paths/users/current/get.yaml
   /users:
     patch:
       $ref: ../swagger/paths/users/patch.yaml
+
 
   /adverts:
     get:
@@ -56,9 +58,10 @@ paths:
       $ref: ../swagger/paths/adverts/start/get.yaml
   /adverts/{id}:
     get:
-      $ref: ../swagger/paths/adverts/id-get.yaml
+      $ref: ../swagger/paths/adverts/{id}/get.yaml
     patch:
-      $ref: ../swagger/paths/adverts/id-patch.yaml
+      $ref: ../swagger/paths/adverts/{id}/patch.yaml
+
 
   /filters:
     get:
@@ -66,6 +69,7 @@ paths:
   /enums:
     get:
       $ref: ../swagger/paths/enums/get.yaml
+
 
 components:
   securitySchemes:
