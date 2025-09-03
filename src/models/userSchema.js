@@ -10,7 +10,13 @@ const userSchema = new Schema(
       lowercase: true,
       match: [/^\S+@\S+\.\S+$/, 'Please use a valid email address'],
     },
-    phone: { type: String },
+    phone: {
+      type: String,
+      match: [
+        /^\+?\d{9,15}$/,
+        'Phone number must be 9 to 15 digits, optionally starting with +',
+      ],
+    },
     messengers: [{ type: String }], // наприклад ["telegram", "viber"]
     password: { type: String, required: true },
     ads: [{ type: Schema.Types.ObjectId, ref: 'Advert' }],
