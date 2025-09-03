@@ -6,12 +6,12 @@ export const getFilterOptionsService = async () => {
   const cities = await Advert.distinct('context.location.city', filter);
   const districts = await Advert.distinct('context.location.district', filter);
   const species = await Advert.distinct('animal.species', filter);
-  const status = await Advert.distinct('status', filter);
+  const statuses = await Advert.distinct('status', filter);
 
   return {
     cities,
     districts,
     species,
-    status,
+    statuses,
   };
 };
