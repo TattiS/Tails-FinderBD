@@ -1,17 +1,18 @@
 summary: Get contacts of a user by ID
+operationId: getUserContactsById
 description: Returns phone and messenger contacts of another user. Authorization required.
 tags:
-- Contacts
+  - Contacts
 security:
-- bearerAuth: []
+  - bearerAuth: []
 parameters:
-- in: path
-  name: id
-  required: true
-  description: ID of the user whose contacts are requested
-  schema:
-    type: string
-    example: 64f0a2c9e1b3f9a123456789
+  - in: path
+    name: id
+    required: true
+    description: ID of the user whose contacts are requested
+    schema:
+      type: string
+      example: 64f0a2c9e1b3f9a123456789
 responses:
   '200':
     description: Successfully retrieved user contacts

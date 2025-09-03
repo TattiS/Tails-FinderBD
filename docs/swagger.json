@@ -899,10 +899,6 @@
                         ],
                         "example": "самка"
                       },
-                      "age": {
-                        "type": "string",
-                        "example": "2 роки"
-                      },
                       "size": {
                         "type": "string",
                         "enum": [
@@ -1336,10 +1332,6 @@
                           "інше"
                         ],
                         "example": "самець"
-                      },
-                      "age": {
-                        "type": "string",
-                        "example": "3 роки"
                       },
                       "size": {
                         "type": "string",
@@ -1902,10 +1894,6 @@
                   "інше"
                 ],
                 "example": "самка"
-              },
-              "age": {
-                "type": "string",
-                "example": "2 роки"
               },
               "size": {
                 "type": "string",

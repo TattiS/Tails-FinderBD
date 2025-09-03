@@ -30,7 +30,6 @@ export const createAdvertSchema = Joi.object({
     sex: Joi.string()
       .valid(...SEX)
       .default('інше'),
-    age: Joi.string().allow(''),
     size: Joi.string()
       .valid(...SIZE)
       .default('інше'),
@@ -66,7 +65,6 @@ export const updateAdvertSchema = Joi.object({
     sex: Joi.string()
       .valid(...SEX)
       .optional(),
-    age: Joi.string().allow('').optional(),
     size: Joi.string()
       .valid(...SIZE)
       .optional(),

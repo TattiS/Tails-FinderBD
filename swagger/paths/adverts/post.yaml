@@ -4,7 +4,7 @@ tags:
   - AnimalAds
 description: Creates a new animal advert for a found or lost animal. Requires authentication. Photos are uploaded as files. After creation, the advert is linked to the user and possible matches may trigger notifications to other users.
 security:
-  - bearerAuth: []   # якщо є JWT auth
+  - bearerAuth: [] # якщо є JWT auth
 requestBody:
   required: true
   content:
@@ -27,11 +27,11 @@ requestBody:
             type: array
             items:
               type: string
-            example: ["blackFur", "whiteEar"]
+            example: ['blackFur', 'whiteEar']
           status:
             type: string
             enum: [found, lost]
-            example: "lost"
+            example: 'lost'
           animal:
             type: object
             required:
@@ -53,16 +53,13 @@ requestBody:
                 type: string
                 enum: [самець, самка, інше]
                 example: самка
-              age:
-                type: string
-                example: 2 роки
               size:
                 type: string
                 enum: [малий, середній, великий, інше]
                 example: середній
               features:
                 type: string
-                example: "Має червону хустку"
+                example: 'Має червону хустку'
           context:
             type: object
             required:
@@ -82,7 +79,7 @@ requestBody:
                     example: Point
                   coordinates:
                     type: array
-                    description: "[longitude, latitude]"
+                    description: '[longitude, latitude]'
                     items:
                       type: number
                     example: [30.5234, 50.4501]
@@ -94,7 +91,7 @@ requestBody:
                     example: Оболонський
                   address:
                     type: string
-                    example: "вул. Грушевського, 1"
+                    example: 'вул. Грушевського, 1'
               date:
                 type: string
                 format: date-time
@@ -102,7 +99,7 @@ requestBody:
               description:
                 type: string
                 maxLength: 1000
-                example: "Собака загубився біля парку. Дуже дружній."
+                example: 'Собака загубився біля парку. Дуже дружній.'
 responses:
   '201':
     description: Advert successfully created
