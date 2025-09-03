@@ -14,7 +14,11 @@ const userSchema = new Schema(
     messengers: [{ type: String }], // наприклад ["telegram", "viber"]
     password: { type: String, required: true },
     ads: [{ type: Schema.Types.ObjectId, ref: 'Advert' }],
-    notificationsAllowed: { type: Boolean, default: true },
+    favAds: [{ type: Schema.Types.ObjectId, ref: 'Advert' }],
+    notificationsAllowed: { type: Boolean, default: false },
+    termsAccepted: { type: Boolean, required: true },
+    termsAcceptedAt: { type: Date, default: Date.now },
+    termsVersion: { type: String, default: '1.0' },
   },
   { timestamps: true, versionKey: false },
 );

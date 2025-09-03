@@ -24,25 +24,46 @@ properties:
   phone:
     description: User's phone number
     type: string
-    example: "+380931234567"
+    example: '+380931234567'
   messengers:
     description: List of messengers where user can be contacted
     type: array
     items:
       type: string
-      example: "telegram"
-    example: ["telegram", "viber"]
+      example: 'telegram'
+    example: ['telegram', 'viber']
   ads:
     description: List of user's adverts (ObjectIds)
     type: array
     items:
       type: string
-      example: "665d14a36a70b4794fbcab12"
+      example: '665d14a36a70b4794fbcab12'
+  favAds:
+    description: List of user's favourite adverts (ObjectIds)
+    type: array
+    items:
+      type: string
+      example: '665d14a36a70b4794fbcab12'
   notificationsAllowed:
     description: Whether the user allows notifications
     type: boolean
-    default: true
+    default: false
     example: true
+  termsAccepted:
+    description: Whether the user accepted the terms of service
+    type: boolean
+    example: true
+    default: false
+  termsAcceptedAt:
+    description: Date when the user accepted the terms
+    type: string
+    format: date-time
+    example: 2025-09-03T12:00:00.000Z
+  termsVersion:
+    description: Version of the terms accepted by the user
+    type: string
+    example: '1.0'
+    default: '1.0'
   createdAt:
     type: string
     format: date-time
