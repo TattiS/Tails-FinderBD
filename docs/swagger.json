@@ -372,6 +372,82 @@
         }
       }
     },
+    "/users/{id}/contacts": {
+      "get": {
+        "summary": "Get contacts of a user by ID",
+        "description": "Returns phone and messenger contacts of another user. Authorization required.",
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of the user whose contacts are requested",
+            "schema": {
+              "type": "string",
+              "example": "64f0a2c9e1b3f9a123456789"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved user contacts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully retrieved user contacts"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "phone": {
+                          "type": "string",
+                          "example": "+380991234567"
+                        },
+                        "messengers": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": [
+                            "telegram",
+                            "viber"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid user ID"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
     "/users": {
       "patch": {
         "operationId": "updateUserService",
@@ -1710,11 +1786,37 @@
               "example": "665d14a36a70b4794fbcab12"
             }
           },
+          "favAds": {
+            "description": "List of user's favourite adverts (ObjectIds)",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "665d14a36a70b4794fbcab12"
+            }
+          },
           "notificationsAllowed": {
             "description": "Whether the user allows notifications",
             "type": "boolean",
-            "default": true,
+            "default": false,
             "example": true
+          },
+          "termsAccepted": {
+            "description": "Whether the user accepted the terms of service",
+            "type": "boolean",
+            "example": true,
+            "default": false
+          },
+          "termsAcceptedAt": {
+            "description": "Date when the user accepted the terms",
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-09-03T12:00:00.000Z"
+          },
+          "termsVersion": {
+            "description": "Version of the terms accepted by the user",
+            "type": "string",
+            "example": "1.0",
+            "default": "1.0"
           },
           "createdAt": {
             "type": "string",

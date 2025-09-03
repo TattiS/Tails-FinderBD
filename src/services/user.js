@@ -38,3 +38,35 @@ export const addAdvertToUserService = async (userId, advertId) => {
   );
   return updatedUser;
 };
+export const addAdvertToFavService = async (userId, advertId) => {
+  if (!mongoose.isValidObjectId(userId)) {
+    throw createHttpError(400, 'Invalid user ID');
+  }
+  if (!mongoose.isValidObjectId(advertId)) {
+    throw createHttpError(400, 'Invalid advert ID');
+  }
+
+  const updatedUser = await UsersCollection.findByIdAndUpdate(
+    userId,
+    { $push: { favAds: advertId } },
+    { new: true },
+  );
+  return updatedUser;
+};
+
+export const getUserContactsService = async (userId) => {
+  if (!mongoose.isValidObjectId(userId)) {
+    throw createHttpError(400, 'Invalid user ID');
+  }
+
+  const userContacts = await UsersCollection.findById(
+    userId,
+    'phone messengers',
+  );
+
+  if (!userContacts) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  return userContacts;
+};
