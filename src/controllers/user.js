@@ -1,4 +1,4 @@
-import { updateUserService } from '../services/user.js';
+import { updateUserService, getUserContactsService } from '../services/user.js';
 
 export const getUserCurrentController = async (req, res) => {
   const user = req.user;
@@ -24,5 +24,16 @@ export const updateUserController = async (req, res) => {
     status: 200,
     message: 'Successfully updated user!',
     data: updatedUser,
+  });
+};
+
+export const getUserContactsController = async (req, res) => {
+  const { id } = req.params; // id іншого користувача
+  const contacts = await getUserContactsService(id);
+
+  res.status(200).json({
+    status: 200,
+    message: 'Successfully retrieved user contacts',
+    data: contacts,
   });
 };
