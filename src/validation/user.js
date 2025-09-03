@@ -7,6 +7,9 @@ export const updateUserSchema = Joi.object({
   messengers: Joi.array().items(Joi.string()).optional(),
   password: Joi.string().min(8).max(128).optional(),
   notificationsAllowed: Joi.boolean().optional(),
+  favAds: Joi.array()
+    .items(Joi.string().regex(/^[0-9a-fA-F]{24}$/))
+    .optional(),
 })
   .min(1)
   .messages({

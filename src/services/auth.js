@@ -5,6 +5,7 @@ import createHttpError from 'http-errors';
 import { ONE_DAY } from '../constants/index.js';
 import { UsersCollection } from '../models/userSchema.js';
 import { SessionsCollection } from '../models/sessionSchema.js';
+import { getEnvVar } from '../utils/getEnvVar.js';
 
 const createSession = () => {
   const accessToken = crypto.randomBytes(30).toString('base64');
@@ -22,12 +23,18 @@ export const registerUser = async (payload) => {
   const user = await UsersCollection.findOne({ email: payload.email });
 
   if (user) throw createHttpError(409, 'Email in use');
+  if (!payload.termsAccepted) {
+    throw createHttpError(400, 'You must accept the terms to register');
+  }
 
   const encryptedPassword = await bcrypt.hash(payload.password, 10);
 
   const newUser = await UsersCollection.create({
     ...payload,
     password: encryptedPassword,
+    termsAccepted: true,
+    termsAcceptedAt: new Date(),
+    termsVersion: getEnvVar('TERMS_VERSION'),
   });
 
   const session = createSession();
