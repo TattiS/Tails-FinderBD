@@ -4,7 +4,7 @@ tags:
   - AnimalAds
 description: Updates an existing animal advert by its ID. Only the provided fields will be updated. Supports updating photos (multipart/form-data). Requires authentication.
 security:
-  - bearerAuth: []   # якщо використовується JWT
+  - bearerAuth: [] # якщо використовується JWT
 parameters:
   - in: path
     name: id
@@ -30,11 +30,11 @@ requestBody:
             type: array
             items:
               type: string
-            example: ["blackFur", "whiteEar"]
+            example: ['blackFur', 'whiteEar']
           status:
             type: string
             enum: [found, lost]
-            example: "found"
+            example: 'found'
           animal:
             type: object
             properties:
@@ -53,16 +53,13 @@ requestBody:
                 type: string
                 enum: [самець, самка, інше]
                 example: самець
-              age:
-                type: string
-                example: 3 роки
               size:
                 type: string
                 enum: [малий, середній, великий, інше]
                 example: малий
               features:
                 type: string
-                example: "Має зелену нашийну стрічку"
+                example: 'Має зелену нашийну стрічку'
           context:
             type: object
             properties:
@@ -75,7 +72,7 @@ requestBody:
                     example: Point
                   coordinates:
                     type: array
-                    description: "[longitude, latitude]"
+                    description: '[longitude, latitude]'
                     items:
                       type: number
                     example: [30.5234, 50.4501]
@@ -87,7 +84,7 @@ requestBody:
                     example: Шевченківський
                   address:
                     type: string
-                    example: "вул. Хрещатик, 12"
+                    example: 'вул. Хрещатик, 12'
               date:
                 type: string
                 format: date-time
@@ -95,7 +92,7 @@ requestBody:
               description:
                 type: string
                 maxLength: 1000
-                example: "Кота бачили біля магазину."
+                example: 'Кота бачили біля магазину.'
 responses:
   '200':
     description: Advert successfully updated

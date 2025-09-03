@@ -9,23 +9,23 @@ required:
 properties:
   _id:
     type: string
-    example: "665d14a36a70b4794fbcab12"
+    example: '665d14a36a70b4794fbcab12'
   photos:
     type: array
     items:
       type: string
-      example: "https://example.com/uploads/dog1.jpg"
+      example: 'https://example.com/uploads/dog1.jpg'
     description: Масив URL фотографій (галерея)
   tags:
     type: array
     items:
       type: string
-      example: "friendly"
+      example: 'friendly'
     description: Додаткові мітки
   status:
     type: string
     enum: [found, lost]
-    example: "lost"
+    example: 'lost'
     description: Статус оголошення (знайдено / загублено)
   animal:
     type: object
@@ -35,29 +35,26 @@ properties:
     properties:
       species:
         type: string
-        example: "dog"
+        example: 'dog'
       breed:
         type: string
-        example: "labrador"
+        example: 'labrador'
       colors:
         type: array
         items:
           type: string
-          example: "black"
+          example: 'black'
       sex:
         type: string
         enum: [самець, самка, інше]
-        example: "самка"
-      age:
-        type: string
-        example: "2 роки"
+        example: 'самка'
       size:
         type: string
         enum: [малий, середній, великий, інше]
-        example: "середній"
+        example: 'середній'
       features:
         type: string
-        example: "Має червону нашийну хустку"
+        example: 'Має червону нашийну хустку'
   context:
     type: object
     required:
@@ -74,33 +71,33 @@ properties:
           type:
             type: string
             enum: [Point]
-            example: "Point"
+            example: 'Point'
           coordinates:
             type: array
-            description: "[longitude, latitude]"
+            description: '[longitude, latitude]'
             items:
               type: number
             example: [30.5234, 50.4501]
           city:
             type: string
-            example: "Київ"
+            example: 'Київ'
           district:
             type: string
-            example: "Оболонський"
+            example: 'Оболонський'
           address:
             type: string
-            example: "вул. Грушевського, 1"
+            example: 'вул. Грушевського, 1'
       date:
         type: string
         format: date-time
-        example: "2024-06-01T12:00:00.000Z"
+        example: '2024-06-01T12:00:00.000Z'
       description:
         type: string
         maxLength: 1000
-        example: "Собака загубився біля парку. Дуже дружній."
+        example: 'Собака загубився біля парку. Дуже дружній.'
   user:
     type: string
-    example: "665d14a36a70b4794fbcab34"
+    example: '665d14a36a70b4794fbcab34'
     description: ID користувача, який створив оголошення
   archived:
     type: boolean
@@ -109,8 +106,8 @@ properties:
   createdAt:
     type: string
     format: date-time
-    example: "2024-06-01T12:00:00.000Z"
+    example: '2024-06-01T12:00:00.000Z'
   updatedAt:
     type: string
     format: date-time
-    example: "2024-06-01T12:30:00.000Z"
+    example: '2024-06-01T12:30:00.000Z'

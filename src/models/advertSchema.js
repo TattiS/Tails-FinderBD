@@ -33,7 +33,6 @@ const advertSchema = new Schema(
         enum: SEX,
         default: 'інше',
       },
-      age: { type: String },
       size: {
         type: String,
         enum: SIZE,
