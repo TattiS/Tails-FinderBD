@@ -38,8 +38,8 @@ router.patch(
   '/:id',
   authenticate,
   upload.array('photos', 4),
-  parseJsonFields(['animal', 'context']),
-  validateBody(updateAdvertSchema),
+  parseJsonFields(['animal', 'context'], { optional: true }),
+  validateBody(updateAdvertSchema, { optionalFields: ['animal', 'context'] }),
   ctrlWrapper(updateAdvertController),
 );
 

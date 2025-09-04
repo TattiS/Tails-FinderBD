@@ -11,13 +11,40 @@ import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
 const PORT = Number(getEnvVar('PORT', '3000'));
 
+// export const setupServer = () => {
+//   const app = express();
+
+//   // Middleware
+//   app.use(cors({ origin: '*' }));
+//   app.use(pino({ transport: { target: 'pino-pretty' } }));
+//   app.use(express.json());
+//   app.use(cookieParser());
+
+//   // Swagger
+//   app.use('/api-docs', swaggerDocs());
+
+//   // Routes
+//   app.use('/api', router);
+
+//   // Error handling
+//   app.use(notFoundHandler);
+//   app.use(errorHandler);
+
+//   // Запуск сервера
+//   app.listen(PORT, (error) => {
+//     if (error) throw error;
+//     console.log(`Server is running on port ${PORT}`);
+//   });
+
+// };
+
 export const setupServer = () => {
   const app = express();
 
   // Middleware
   app.use(cors({ origin: '*' }));
   app.use(pino({ transport: { target: 'pino-pretty' } }));
-  app.use(express.json());
+  app.use(express.json({ limit: '10mb' })); // більший ліміт для великих запитів (наприклад, фото)
   app.use(cookieParser());
 
   // Swagger
@@ -30,9 +57,14 @@ export const setupServer = () => {
   app.use(notFoundHandler);
   app.use(errorHandler);
 
-  // Запуск сервера
-  app.listen(PORT, (error) => {
-    if (error) throw error;
+  // Створюємо сервер вручну, щоб можна було задати таймаути
+  const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
   });
+
+  // Таймаути для Render та великих запитів
+  server.keepAliveTimeout = 120000; // 120 секунд
+  server.headersTimeout = 120000;
+
+  return server;
 };

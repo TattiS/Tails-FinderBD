@@ -86,4 +86,4 @@ export const updateAdvertSchema = Joi.object({
     description: Joi.string().max(1000).allow('').optional(),
   }).optional(),
   archived: Joi.boolean().optional(),
-}).min(1);
+});
