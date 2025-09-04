@@ -4,6 +4,7 @@ import { authenticate } from '../middlewares/authenticate.js';
 import { upload } from '../middlewares/multer.js';
 import { parseJsonFields } from '../middlewares/parseJsonFields.js';
 import { validateBody } from '../middlewares/validateBody.js';
+import { checkUpdateData } from '../middlewares/checkUpdateData.js';
 import {
   createAdvertSchema,
   updateAdvertSchema,
@@ -39,6 +40,7 @@ router.patch(
   authenticate,
   upload.array('photos', 4),
   parseJsonFields(['animal', 'context'], { optional: true }),
+  checkUpdateData,
   validateBody(updateAdvertSchema, { optionalFields: ['animal', 'context'] }),
   ctrlWrapper(updateAdvertController),
 );

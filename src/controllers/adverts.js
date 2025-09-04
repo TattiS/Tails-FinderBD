@@ -118,12 +118,13 @@ export const createAdvertController = async (req, res) => {
 export const updateAdvertController = async (req, res) => {
   const { id } = req.params;
   const data = req.body || {};
+  const files = req.files || [];
 
-  if (!Object.keys(data).length && (!req.files || req.files.length === 0)) {
+  if (!Object.keys(data).length && files.length === 0) {
     return res.status(400).json({ message: 'No data provided for update' });
   }
 
-  const updatedAdvert = await updateAdvertService(id, data, req.files || []);
+  const updatedAdvert = await updateAdvertService(id, data, files);
 
   res.status(200).json({
     status: 200,
