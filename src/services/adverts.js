@@ -1,6 +1,7 @@
 import { reverseGeocode } from '../utils/geocode.js';
 import { Advert } from '../models/advertSchema.js';
 import NotFound from 'http-errors';
+import BadRequest from 'http-errors';
 import mongoose from 'mongoose';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 import { getImageTags } from './vision.js';
@@ -43,7 +44,7 @@ export const createAdvertService = async (data, files = []) => {
   if (data.context?.location?.coordinates) {
     const [lng, lat] = data.context.location.coordinates; // без додаткового .coordinates
     const address = await reverseGeocode(lat, lng);
-
+    console.log(address);
     data.context.location = {
       ...data.context.location,
       ...address,
@@ -82,10 +83,14 @@ export const createAdvertService = async (data, files = []) => {
 export const updateAdvertService = async (id, data, files = []) => {
   if (!mongoose.isValidObjectId(id)) throw new NotFound('Invalid advert id');
 
-  if (data.context?.location?.coordinates) {
+  if (!Object.keys(data).length && files.length === 0) {
+    throw new BadRequest('No data provided for update');
+  }
+
+  if (data.context?.location?.coordinates.length === 2) {
     const [lng, lat] = data.context.location.coordinates; // [lng, lat]
     const address = await reverseGeocode(lat, lng);
-
+    console.log(address);
     data.context.location = {
       ...data.context.location,
       ...address,
