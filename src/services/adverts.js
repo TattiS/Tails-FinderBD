@@ -40,8 +40,8 @@ export const getAdvertByIdService = async (id) => {
 
 // Створити нове оголошення
 export const createAdvertService = async (data, files = []) => {
-  if (data.context?.location?.coordinates?.coordinates) {
-    const [lng, lat] = data.context.location.coordinates.coordinates;
+  if (data.context?.location?.coordinates) {
+    const [lng, lat] = data.context.location.coordinates; // без додаткового .coordinates
     const address = await reverseGeocode(lat, lng);
 
     data.context.location = {
@@ -82,8 +82,8 @@ export const createAdvertService = async (data, files = []) => {
 export const updateAdvertService = async (id, data, files = []) => {
   if (!mongoose.isValidObjectId(id)) throw new NotFound('Invalid advert id');
 
-  if (data.context?.location?.coordinates?.coordinates) {
-    const [lng, lat] = data.context.location.coordinates.coordinates;
+  if (data.context?.location?.coordinates) {
+    const [lng, lat] = data.context.location.coordinates; // [lng, lat]
     const address = await reverseGeocode(lat, lng);
 
     data.context.location = {
