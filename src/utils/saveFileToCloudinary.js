@@ -13,6 +13,6 @@ cloudinary.config({
 export const saveFileToCloudinary = async (file) => {
   const response = await cloudinary.uploader.upload(file.path);
   await fs.unlink(file.path); // видаляємо тимчасовий файл після завантаження
-
+  console.log('Cloudinary response:', response);
   return response.secure_url;
 };
