@@ -52,7 +52,7 @@ const advertSchema = new Schema(
           index: '2dsphere',
           required: true,
         },
-        city: { type: String, required: true },
+        city: { type: String },
         district: { type: String },
         address: { type: String },
       },
