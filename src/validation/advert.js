@@ -1,17 +1,17 @@
 import Joi from 'joi';
 import { SPECIES, COLORS, SEX, SIZE } from '../constants/animalEnums.js';
 
-// Для валідації координат GeoJSON при створенні нового оголошення
-const coordinatesSchema = Joi.object({
-  type: Joi.string().valid('Point').required(),
-  coordinates: Joi.array().items(Joi.number().required()).length(2).required(), // [lng, lat]
-});
+// // Для валідації координат GeoJSON при створенні нового оголошення
+// const coordinatesSchema = Joi.object({
+//   type: Joi.string().valid('Point').required(),
+//   coordinates: Joi.array().items(Joi.number().required()).length(2).required(), // [lng, lat]
+// });
 
-// Для валідації координат GeoJSON при оновленні оголошення
-const updateCoordinatesSchema = Joi.object({
-  type: Joi.string().valid('Point').required(),
-  coordinates: Joi.array().items(Joi.number()).length(2).required(),
-});
+// // Для валідації координат GeoJSON при оновленні оголошення
+// const updateCoordinatesSchema = Joi.array()
+//   .ordered(Joi.number().required(), Joi.number().required())
+//   .length(2)
+//   .required(); // [lng, lat];
 
 // Для валідації при створенні нового оголошення
 export const createAdvertSchema = Joi.object({
@@ -37,10 +37,14 @@ export const createAdvertSchema = Joi.object({
   }).required(),
   context: Joi.object({
     location: Joi.object({
-      coordinates: coordinatesSchema,
-      city: Joi.string().required(),
-      district: Joi.string().allow(''),
-      address: Joi.string().allow(''),
+      type: Joi.string().valid('Point').default('Point'),
+      coordinates: Joi.array()
+        .ordered(Joi.number().required(), Joi.number().required())
+        .length(2)
+        .required(),
+      city: Joi.string().optional(),
+      district: Joi.string().allow('').optional(),
+      address: Joi.string().allow('').optional(),
     }).required(),
     date: Joi.date().required(),
     description: Joi.string().max(1000).allow(''),
@@ -72,10 +76,11 @@ export const updateAdvertSchema = Joi.object({
   }).optional(),
   context: Joi.object({
     location: Joi.object({
-      coordinates: updateCoordinatesSchema.optional(),
-      city: Joi.string().optional(),
-      district: Joi.string().allow('').optional(),
-      address: Joi.string().allow('').optional(),
+      type: Joi.string().valid('Point').default('Point'),
+      coordinates: Joi.array()
+        .ordered(Joi.number(), Joi.number()) // [lng, lat]
+        .length(2)
+        .optional(),
     }).optional(),
     date: Joi.date().optional(),
     description: Joi.string().max(1000).allow('').optional(),
