@@ -3,13 +3,22 @@ export const parseJsonFields =
   (req, res, next) => {
     try {
       fields.forEach((field) => {
-        if (req.body[field] && typeof req.body[field] === 'string') {
-          req.body[field] = JSON.parse(req.body[field]);
+        const value = req.body[field];
+        if (typeof value === 'string') {
+          try {
+            req.body[field] = JSON.parse(value);
+          } catch (e) {
+            console.error(`Failed to parse field "${field}":`, e.message);
+
+            return res.status(400).json({
+              message: `Invalid JSON format in field "${field}"`,
+            });
+          }
         }
       });
       next();
     } catch (err) {
-      res.status(400).json({ message: 'Invalid JSON format in request body' });
-      console.error('Failed to parse JSON fields:', err.message);
+      console.error('parseJsonFields middleware error:', err.message);
+      res.status(400).json({ message: 'Invalid request format' });
     }
   };
