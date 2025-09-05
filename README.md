@@ -7,6 +7,8 @@ It supports user registration, authentication, managing lost & found animal adve
 
 💻 Local: http://127.0.0.1:3000/api
 
+📑 Documentations: https://tails-finderbd.onrender.com/api-docs/#/
+
 🚀 Features
 
 🔐 Auth – registration, login, token refresh, logout
