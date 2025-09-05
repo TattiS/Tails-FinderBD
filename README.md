@@ -100,6 +100,3 @@ Testing is recommended via Postman or Swagger UI.
 This project is licensed under the Apache 2.0
 .
 
-Хочеш, я ще додам до README приклади запитів (curl/Postman) англійською? Це зробить його ще більш дружнім для розробників 🚀
-
-Is this conversation helpful so far?
