@@ -3,7 +3,7 @@
 Tails-FinderBD is a RESTful API for an animal search service.
 It supports user registration, authentication, managing lost & found animal adverts, filters, and enum options.
 
-🌍 Production: https://tails-finderbd.onrender.com/api
+🌍 Production: https://tails-finderbd.onrender.com/api,
                https://tails-finderbd-production.up.railway.app/
 
 💻 Local: http://127.0.0.1:3000/api
