@@ -47,3 +47,4 @@ export const COLORS = [
 
 export const SEX = ['самець', 'самка', 'інше'];
 export const SIZE = ['маленький', 'середній', 'великий', 'інше'];
+export const STATUS = ['знайдено', 'загублено'];
