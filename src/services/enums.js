@@ -1,4 +1,10 @@
-import { SPECIES, COLORS, SEX, SIZE } from '../constants/animalEnums.js';
+import {
+  SPECIES,
+  COLORS,
+  SEX,
+  SIZE,
+  STATUS,
+} from '../constants/animalEnums.js';
 
 export const getEnumOptionsService = () => {
   return {
@@ -6,6 +12,6 @@ export const getEnumOptionsService = () => {
     colors: COLORS,
     sex: SEX,
     size: SIZE,
-    status: ['found', 'lost'],
+    status: STATUS,
   };
 };
