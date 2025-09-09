@@ -2,10 +2,13 @@ import { Router } from 'express';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import { upload } from '../middlewares/multer.js';
-import { parseJsonFields } from '../middlewares/parseJsonFields.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { checkUpdateData } from '../middlewares/checkUpdateData.js';
 import { filesToBody } from '../middlewares/filesToBody.js';
+import {
+  assembleAnimalContext,
+  assembleAnimalContextForUpdate,
+} from '../middlewares/assembleAnimalContext.js';
 import {
   createAdvertSchema,
   updateAdvertSchema,
@@ -16,6 +19,7 @@ import {
   getAdvertsController,
   getAdvertByIdController,
 } from '../controllers/adverts.js';
+import { parseJsonFields } from '../middlewares/parseJsonFields.js';
 
 const router = Router();
 
@@ -30,8 +34,9 @@ router.post(
   '/',
   authenticate,
   upload.array('photos', 4),
-  parseJsonFields(['animal', 'context']),
   filesToBody,
+  parseJsonFields,
+  assembleAnimalContext,
   validateBody(createAdvertSchema),
   ctrlWrapper(createAdvertController),
 );
@@ -41,9 +46,10 @@ router.patch(
   '/:id',
   authenticate,
   upload.array('photos', 4),
-  parseJsonFields(['animal', 'context'], { optional: true }),
   checkUpdateData,
   filesToBody,
+  parseJsonFields,
+  assembleAnimalContextForUpdate,
   validateBody(updateAdvertSchema, { optionalFields: ['animal', 'context'] }),
   ctrlWrapper(updateAdvertController),
 );

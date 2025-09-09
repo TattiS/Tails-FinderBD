@@ -102,6 +102,8 @@ export const createAdvertController = async (req, res) => {
   data.user = req.user._id; // автор з authenticate
   data.notificationsAllowed = data.notificationsAllowed === 'true';
 
+  console.log('Data: ', data);
+
   const newAdvert = await createAdvertService(data, req.files || []);
 
   await addAdvertToUserService(req.user._id, newAdvert._id);
