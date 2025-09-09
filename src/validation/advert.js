@@ -7,21 +7,24 @@ import {
   STATUS,
 } from '../constants/animalEnums.js';
 
-// // Для валідації координат GeoJSON при створенні нового оголошення
-// const coordinatesSchema = Joi.object({
-//   type: Joi.string().valid('Point').required(),
-//   coordinates: Joi.array().items(Joi.number().required()).length(2).required(), // [lng, lat]
-// });
-
-// // Для валідації координат GeoJSON при оновленні оголошення
-// const updateCoordinatesSchema = Joi.array()
-//   .ordered(Joi.number().required(), Joi.number().required())
-//   .length(2)
-//   .required(); // [lng, lat];
-
-// Для валідації при створенні нового оголошення
 export const createAdvertSchema = Joi.object({
-  photos: Joi.array().items(Joi.string().uri()).min(1).required(),
+  photos: Joi.array()
+    .items(
+      Joi.object({
+        originalname: Joi.string().required(),
+        mimetype: Joi.string().required(),
+        path: Joi.string().required(),
+        size: Joi.number().required(),
+      }),
+    )
+    .min(1)
+    .max(4)
+    .required()
+    .messages({
+      'array.min': 'Додайте хоча б одне фото',
+      'array.max': 'Максимум 4 фото',
+      'any.required': 'Додайте фото',
+    }),
   tags: Joi.array().items(Joi.string()).optional(),
   status: Joi.string()
     .valid(...STATUS)
