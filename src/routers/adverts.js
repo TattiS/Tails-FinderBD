@@ -37,7 +37,7 @@ router.post(
   filesToBody,
   parseJsonFields,
   assembleAnimalContext,
-  validateBody(createAdvertSchema),
+  // validateBody(createAdvertSchema),
   ctrlWrapper(createAdvertController),
 );
 
