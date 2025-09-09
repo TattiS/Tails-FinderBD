@@ -6,6 +6,7 @@ import { parseJsonFields } from '../middlewares/parseJsonFields.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { checkUpdateData } from '../middlewares/checkUpdateData.js';
 import { filesToBody } from '../middlewares/filesToBody.js';
+import { assembleAnimalContext } from '../middlewares/assembleAnimalContext.js';
 import {
   createAdvertSchema,
   updateAdvertSchema,
@@ -32,7 +33,8 @@ router.post(
   upload.array('photos', 4),
   parseJsonFields(['animal', 'context']),
   filesToBody,
-  // validateBody(createAdvertSchema),
+  assembleAnimalContext,
+  validateBody(createAdvertSchema),
   ctrlWrapper(createAdvertController),
 );
 
