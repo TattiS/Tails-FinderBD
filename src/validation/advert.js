@@ -1,5 +1,11 @@
 import Joi from 'joi';
-import { SPECIES, COLORS, SEX, SIZE } from '../constants/animalEnums.js';
+import {
+  SPECIES,
+  COLORS,
+  SEX,
+  SIZE,
+  STATUS,
+} from '../constants/animalEnums.js';
 
 // // Для валідації координат GeoJSON при створенні нового оголошення
 // const coordinatesSchema = Joi.object({
@@ -57,7 +63,9 @@ export const createAdvertSchema = Joi.object({
 export const updateAdvertSchema = Joi.object({
   photos: Joi.array().items(Joi.string().uri()).min(1).optional(),
   tags: Joi.array().items(Joi.string()).optional(),
-  status: Joi.string().valid('found', 'lost').optional(),
+  status: Joi.string()
+    .valid(...STATUS)
+    .optional(),
   animal: Joi.object({
     species: Joi.string()
       .valid(...SPECIES)
@@ -83,7 +91,7 @@ export const updateAdvertSchema = Joi.object({
         .optional(),
     }).optional(),
     date: Joi.date().optional(),
-    description: Joi.string().max(1000).allow('').optional(),
+    description: Joi.string().max(2048).allow('').optional(),
   }).optional(),
   archived: Joi.boolean().optional(),
 });
