@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { UsersCollection } from '../models/userSchema.js';
 import createHttpError from 'http-errors';
+import NotFound from 'http-errors';
 
 export const updateUserService = async (userId, payload) => {
   if (!mongoose.isValidObjectId(userId)) {
@@ -69,4 +70,18 @@ export const getUserContactsService = async (userId) => {
   }
 
   return userContacts;
+};
+
+export const updateNotificationsService = async (userId, isAllowed) => {
+  if (!mongoose.isValidObjectId(userId)) throw new NotFound('Invalid user id');
+
+  const updatedUser = await UsersCollection.findByIdAndUpdate(
+    userId,
+    { notificationsAllowed: isAllowed },
+    { new: true },
+  );
+
+  if (!updatedUser) throw new NotFound('User not found');
+
+  return updatedUser;
 };

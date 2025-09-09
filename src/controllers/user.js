@@ -1,4 +1,8 @@
-import { updateUserService, getUserContactsService } from '../services/user.js';
+import {
+  updateUserService,
+  getUserContactsService,
+  updateNotificationsService,
+} from '../services/user.js';
 
 export const getUserCurrentController = async (req, res) => {
   const user = req.user;
@@ -36,4 +40,14 @@ export const getUserContactsController = async (req, res) => {
     message: 'Successfully retrieved user contacts',
     data: contacts,
   });
+};
+
+export const updateNotificationsController = async (req, res) => {
+  const { notificationsAllowed } = req.body;
+  const userId = req.user._id;
+  const updatedUser = await updateNotificationsService(
+    userId,
+    notificationsAllowed,
+  );
+  res.status(200).json(updatedUser);
 };
