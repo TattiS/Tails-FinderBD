@@ -19,6 +19,7 @@ import {
   getAdvertsController,
   getAdvertByIdController,
 } from '../controllers/adverts.js';
+import { parseJsonFields } from '../middlewares/parseJsonFields.js';
 
 const router = Router();
 
@@ -34,6 +35,7 @@ router.post(
   authenticate,
   upload.array('photos', 4),
   filesToBody,
+  parseJsonFields,
   assembleAnimalContext,
   validateBody(createAdvertSchema),
   ctrlWrapper(createAdvertController),
@@ -46,6 +48,7 @@ router.patch(
   upload.array('photos', 4),
   checkUpdateData,
   filesToBody,
+  parseJsonFields,
   assembleAnimalContextForUpdate,
   validateBody(updateAdvertSchema, { optionalFields: ['animal', 'context'] }),
   ctrlWrapper(updateAdvertController),
