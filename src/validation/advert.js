@@ -23,7 +23,9 @@ import {
 export const createAdvertSchema = Joi.object({
   photos: Joi.array().items(Joi.string().uri()).min(1).required(),
   tags: Joi.array().items(Joi.string()).optional(),
-  status: Joi.string().valid('found', 'lost').required(),
+  status: Joi.string()
+    .valid(...STATUS)
+    .required(),
   animal: Joi.object({
     species: Joi.string()
       .valid(...SPECIES)
