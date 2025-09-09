@@ -6,8 +6,6 @@ export const filesToBody = (req, res, next) => {
       path: file.path,
       size: file.size,
     }));
-  } else {
-    req.body.photos = [];
   }
   next();
 };
