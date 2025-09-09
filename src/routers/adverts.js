@@ -5,6 +5,7 @@ import { upload } from '../middlewares/multer.js';
 import { parseJsonFields } from '../middlewares/parseJsonFields.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { checkUpdateData } from '../middlewares/checkUpdateData.js';
+import { filesToBody } from '../middlewares/filesToBody.js';
 import {
   createAdvertSchema,
   updateAdvertSchema,
@@ -30,6 +31,7 @@ router.post(
   authenticate,
   upload.array('photos', 4),
   parseJsonFields(['animal', 'context']),
+  filesToBody,
   validateBody(createAdvertSchema),
   ctrlWrapper(createAdvertController),
 );
@@ -41,6 +43,7 @@ router.patch(
   upload.array('photos', 4),
   parseJsonFields(['animal', 'context'], { optional: true }),
   checkUpdateData,
+  filesToBody,
   validateBody(updateAdvertSchema, { optionalFields: ['animal', 'context'] }),
   ctrlWrapper(updateAdvertController),
 );
