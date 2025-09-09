@@ -32,7 +32,7 @@ router.post(
   upload.array('photos', 4),
   parseJsonFields(['animal', 'context']),
   filesToBody,
-  validateBody(createAdvertSchema),
+  // validateBody(createAdvertSchema),
   ctrlWrapper(createAdvertController),
 );
 
