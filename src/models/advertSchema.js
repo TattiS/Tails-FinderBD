@@ -57,7 +57,7 @@ const advertSchema = new Schema(
         address: { type: String },
       },
       date: { type: Date, required: true },
-      description: { type: String, maxlength: 1000 },
+      description: { type: String, maxlength: 2048 },
     },
     user: {
       type: Schema.Types.ObjectId,

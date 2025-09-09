@@ -53,7 +53,7 @@ export const createAdvertSchema = Joi.object({
       address: Joi.string().allow('').optional(),
     }).required(),
     date: Joi.date().required(),
-    description: Joi.string().max(1000).allow(''),
+    description: Joi.string().max(2048).allow(''),
   }).required(),
   user: Joi.string().hex().length(24).required(),
   archived: Joi.boolean().default(false),
