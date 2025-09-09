@@ -1,5 +1,11 @@
 import { Schema, model } from 'mongoose';
-import { SPECIES, COLORS, SEX, SIZE } from '../constants/animalEnums.js';
+import {
+  SPECIES,
+  COLORS,
+  SEX,
+  SIZE,
+  STATUS,
+} from '../constants/animalEnums.js';
 
 const advertSchema = new Schema(
   {
@@ -11,7 +17,7 @@ const advertSchema = new Schema(
     tags: { type: [String], default: [] },
     status: {
       type: String,
-      enum: ['found', 'lost'],
+      enum: [...STATUS],
       required: true,
     },
     animal: {
