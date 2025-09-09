@@ -45,6 +45,6 @@ export const COLORS = [
   'Інше',
 ];
 
-export const SEX = ['самець', 'самка', 'інше'];
-export const SIZE = ['маленький', 'середній', 'великий', 'інше'];
+export const SEX = ['Самець', 'Самка', 'Інше'];
+export const SIZE = ['Маленький', 'Середній', 'Великий', 'Інше'];
 export const STATUS = ['Знайдено', 'Загублено'];
