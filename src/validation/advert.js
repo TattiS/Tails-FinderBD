@@ -53,7 +53,7 @@ export const createAdvertSchema = Joi.object({
         .ordered(Joi.number().required(), Joi.number().required())
         .length(2)
         .required(),
-      city: Joi.string().optional(),
+      city: Joi.string().allow('').optional(),
       district: Joi.string().allow('').optional(),
       address: Joi.string().allow('').optional(),
     }).required(),

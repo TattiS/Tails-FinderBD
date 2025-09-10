@@ -8,20 +8,20 @@ import {
   logoutUserController,
   refreshUserSessionController,
 } from '../controllers/auth.js';
-import { validateBody } from '../middlewares/validateBody.js';
+import { validateAuthBody } from '../middlewares/validateAuthBody.js';
 import { authenticate } from '../middlewares/authenticate.js';
 
 const router = Router();
 
 router.post(
   '/register',
-  validateBody(registerUserSchema),
+  validateAuthBody(registerUserSchema),
   ctrlWrapper(registerUserController),
 );
 
 router.post(
   '/login',
-  validateBody(loginUserSchema),
+  validateAuthBody(loginUserSchema),
   ctrlWrapper(loginUserController),
 );
 
