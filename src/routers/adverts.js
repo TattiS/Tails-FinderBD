@@ -32,7 +32,7 @@ router.post(
   '/',
   authenticate,
   upload.array('photos', 4),
-  filesToBody,
+  // filesToBody,
   parseJsonFields(['colors', 'location']),
   extractNotifications,
   assembleAnimalContext,

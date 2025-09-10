@@ -52,21 +52,10 @@ export const createAdvertService = async (data, files = []) => {
   }
 
   if (files.length > 0) {
-    // const results = await Promise.allSettled(
-    //   files.map((file) => saveFileToCloudinary(file.path, 'adverts')),
-    // );
-    const results = [];
+    const results = await Promise.allSettled(
+      files.map((file) => saveFileToCloudinary(file.path, 'adverts')),
+    );
 
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      try {
-        const result = await saveFileToCloudinary(file.path, 'adverts');
-        results.push({ status: 'fulfilled', value: result });
-      } catch (error) {
-        results.push({ status: 'rejected', reason: error });
-      }
-    }
-    console.log(results);
     const photosUrls = results
       .filter((res) => res.status === 'fulfilled')
       .map((res) => res.value);
