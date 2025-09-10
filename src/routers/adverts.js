@@ -5,6 +5,7 @@ import { upload } from '../middlewares/multer.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { checkUpdateData } from '../middlewares/checkUpdateData.js';
 import { filesToBody } from '../middlewares/filesToBody.js';
+import { extractNotifications } from '../middlewares/extractNotifications.js';
 import {
   assembleAnimalContext,
   assembleAnimalContextForUpdate,
@@ -34,7 +35,9 @@ router.post(
   '/',
   authenticate,
   upload.array('photos', 4),
-  filesToBody,
+  filesToBody('photos'),
+  parseJsonFields(['colors', 'location']),
+  extractNotifications,
   assembleAnimalContext,
   validateBody(createAdvertSchema),
   ctrlWrapper(createAdvertController),
