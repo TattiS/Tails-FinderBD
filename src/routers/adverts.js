@@ -3,6 +3,7 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import { upload } from '../middlewares/multer.js';
 import { validateBody } from '../middlewares/validateBody.js';
+import { validateAuthBody } from '../middlewares/validateAuthBody.js';
 import { checkUpdateData } from '../middlewares/checkUpdateData.js';
 import { filesToBody } from '../middlewares/filesToBody.js';
 import { extractNotifications } from '../middlewares/extractNotifications.js';
@@ -39,7 +40,7 @@ router.post(
   parseJsonFields(['colors', 'location']),
   extractNotifications,
   assembleAnimalContext,
-  validateBody(createAdvertSchema),
+  validateAuthBody(createAdvertSchema),
   ctrlWrapper(createAdvertController),
 );
 
