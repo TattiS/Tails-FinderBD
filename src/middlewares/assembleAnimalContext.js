@@ -24,36 +24,48 @@ export const assembleAnimalContext = (req, res, next) => {
       features: features || '',
     };
 
-    if (typeof location === 'string') {
-      try {
-        const locationJSON = JSON.parse(location);
+    req.body.context = {
+      location: {
+        type: 'Point',
+        coordinates: location,
+        city: city || '',
+        district: district || '',
+        address: address || '',
+      },
+      date: date ? new Date(date) : new Date(),
+      description: description || '',
+    };
 
-        if (
-          locationJSON &&
-          locationJSON.lat !== undefined &&
-          locationJSON.lng !== undefined
-        ) {
-          req.body.context = {
-            location: {
-              type: 'Point',
-              coordinates: [location.lng, location.lat],
-              city: city || '',
-              district: district || '',
-              address: address || '',
-            },
-            date: date ? new Date(date) : new Date(),
-            description: description || '',
-          };
-        } else {
-          return res.status(400).json({ message: 'Location is required' });
-        }
-      } catch (e) {
-        console.warn('Не вдалося розпарсити location:', location);
-        return res
-          .status(400)
-          .json({ message: `Invalid location format ${e.message}` });
-      }
-    }
+    // if (typeof location === 'string') {
+    //   try {
+    //     const locationJSON = JSON.parse(location);
+
+    //     if (
+    //       locationJSON &&
+    //       locationJSON.lat !== undefined &&
+    //       locationJSON.lng !== undefined
+    //     ) {
+    //       req.body.context = {
+    //         location: {
+    //           type: 'Point',
+    //           coordinates: [location.lng, location.lat],
+    //           city: city || '',
+    //           district: district || '',
+    //           address: address || '',
+    //         },
+    //         date: date ? new Date(date) : new Date(),
+    //         description: description || '',
+    //       };
+    //     } else {
+    //       return res.status(400).json({ message: 'Location is required' });
+    //     }
+    //   } catch (e) {
+    //     console.warn('Не вдалося розпарсити location:', location);
+    //     return res
+    //       .status(400)
+    //       .json({ message: `Invalid location format ${e.message}` });
+    //   }
+    // }
 
     next();
   } catch (err) {
