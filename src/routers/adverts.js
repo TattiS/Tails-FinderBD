@@ -35,7 +35,7 @@ router.post(
   '/',
   authenticate,
   upload.array('photos', 4),
-  filesToBody('photos'),
+  filesToBody,
   parseJsonFields(['colors', 'location']),
   extractNotifications,
   assembleAnimalContext,
