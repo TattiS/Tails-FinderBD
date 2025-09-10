@@ -6,10 +6,7 @@ import { validateBody } from '../middlewares/validateBody.js';
 import { checkUpdateData } from '../middlewares/checkUpdateData.js';
 import { filesToBody } from '../middlewares/filesToBody.js';
 import { extractNotifications } from '../middlewares/extractNotifications.js';
-import {
-  assembleAnimalContext,
-  assembleAnimalContextForUpdate,
-} from '../middlewares/assembleAnimalContext.js';
+import { assembleAnimalContext } from '../middlewares/assembleAnimalContext.js';
 import {
   createAdvertSchema,
   updateAdvertSchema,
@@ -50,7 +47,6 @@ router.patch(
   upload.array('photos', 4),
   checkUpdateData,
   filesToBody,
-  assembleAnimalContextForUpdate,
   validateBody(updateAdvertSchema, { optionalFields: ['animal', 'context'] }),
   ctrlWrapper(updateAdvertController),
 );
