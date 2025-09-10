@@ -42,6 +42,10 @@ export const setupServer = () => {
   const app = express();
 
   // Middleware
+  app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+  });
   app.use(cors({ origin: '*' }));
   app.use(pino({ transport: { target: 'pino-pretty' } }));
   app.use(express.json({ limit: '10mb' })); // більший ліміт для великих запитів (наприклад, фото)
