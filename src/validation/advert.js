@@ -33,7 +33,7 @@ export const createAdvertSchema = Joi.object({
     species: Joi.string()
       .valid(...SPECIES)
       .required(),
-    breed: Joi.string().allow(''),
+    breed: Joi.string().allow('').optional(),
     colors: Joi.array()
       .items(Joi.string().valid(...COLORS))
       .min(1)
@@ -44,7 +44,7 @@ export const createAdvertSchema = Joi.object({
     size: Joi.string()
       .valid(...SIZE)
       .default('інше'),
-    features: Joi.string().allow(''),
+    features: Joi.string().allow('').optional(),
   }).required(),
   context: Joi.object({
     location: Joi.object({
@@ -58,7 +58,7 @@ export const createAdvertSchema = Joi.object({
       address: Joi.string().allow('').optional(),
     }).required(),
     date: Joi.date().required(),
-    description: Joi.string().max(2048).allow(''),
+    description: Joi.string().max(2048).allow('').optional(),
   }).required(),
   user: Joi.string().hex().length(24).required(),
   archived: Joi.boolean().default(false),

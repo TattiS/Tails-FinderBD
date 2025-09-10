@@ -1,76 +1,54 @@
-export const assembleAnimalContext = (req, res, next) => {
+import axios from 'axios';
+
+export const assembleAnimalContext = () => async (req, res, next) => {
   try {
-    const {
-      species,
-      colors,
-      sex,
-      size,
-      breed,
-      features,
-      location,
-      date,
-      description,
-      city,
-      district,
-      address,
-    } = req.body;
+    const { species, colors, sex, size, location, date, description } =
+      req.body;
+
+    if (!location || !Array.isArray(location) || location.length !== 2) {
+      return res.status(400).json({ message: 'Location is required' });
+    }
+
+    const [lng, lat] = location;
+
+    let city = '',
+      district = '',
+      address = '';
+    try {
+      const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&accept-language=uk`;
+      const response = await axios.get(url, {
+        headers: { 'User-Agent': 'tailsfinder-app' },
+      });
+      const data = response.data.address || {};
+      city = data.city || data.town || data.village || '';
+      district = data.suburb || data.county || '';
+      address = data.road || data.neighbourhood || '';
+    } catch (error) {
+      console.warn('Reverse geocode failed:', error.message);
+    }
+
+    req.body.context = {
+      location: {
+        type: 'Point',
+        coordinates: [lng, lat],
+        city,
+        district,
+        address,
+      },
+      date: date ? new Date(date) : new Date(),
+      description: description || '',
+    };
 
     req.body.animal = {
       species,
       colors,
       sex,
       size,
-      breed: breed || '',
-      features: features || '',
     };
-
-    req.body.context = {
-      location: {
-        type: 'Point',
-        coordinates: location,
-        city: city || '',
-        district: district || '',
-        address: address || '',
-      },
-      date: date ? new Date(date) : new Date(),
-      description: description || '',
-    };
-
-    // if (typeof location === 'string') {
-    //   try {
-    //     const locationJSON = JSON.parse(location);
-
-    //     if (
-    //       locationJSON &&
-    //       locationJSON.lat !== undefined &&
-    //       locationJSON.lng !== undefined
-    //     ) {
-    //       req.body.context = {
-    //         location: {
-    //           type: 'Point',
-    //           coordinates: [location.lng, location.lat],
-    //           city: city || '',
-    //           district: district || '',
-    //           address: address || '',
-    //         },
-    //         date: date ? new Date(date) : new Date(),
-    //         description: description || '',
-    //       };
-    //     } else {
-    //       return res.status(400).json({ message: 'Location is required' });
-    //     }
-    //   } catch (e) {
-    //     console.warn('Не вдалося розпарсити location:', location);
-    //     return res
-    //       .status(400)
-    //       .json({ message: `Invalid location format ${e.message}` });
-    //   }
-    // }
 
     next();
   } catch (err) {
-    console.error('assembleAnimalContext error:', err.message);
-    res.status(400).json({ message: 'Invalid request data' });
+    next(err);
   }
 };
 
