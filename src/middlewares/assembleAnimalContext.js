@@ -1,6 +1,4 @@
-// import axios from 'axios';
-
-export const assembleAnimalContext = () => async (req, res, next) => {
+export const assembleAnimalContext = () => (req, res, next) => {
   try {
     const { species, colors, sex, size, location, date, description } =
       req.body;
@@ -11,29 +9,13 @@ export const assembleAnimalContext = () => async (req, res, next) => {
 
     const [lng, lat] = location;
 
-    let city = '',
-      district = '',
-      address = '';
-    // try {
-    //   const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&accept-language=uk`;
-    //   const response = await axios.get(url, {
-    //     headers: { 'User-Agent': 'tailsfinder-app' },
-    //   });
-    //   const data = response.data.address || {};
-    //   city = data.city || data.town || data.village || '';
-    //   district = data.suburb || data.county || '';
-    //   address = data.road || data.neighbourhood || '';
-    // } catch (error) {
-    //   console.warn('Reverse geocode failed:', error.message);
-    // }
-
     req.body.context = {
       location: {
         type: 'Point',
         coordinates: [lng, lat],
-        city,
-        district,
-        address,
+        city: '',
+        district: '',
+        address: '',
       },
       date: date ? new Date(date) : new Date(),
       description: description || '',
@@ -49,63 +31,5 @@ export const assembleAnimalContext = () => async (req, res, next) => {
     next();
   } catch (err) {
     next(err);
-  }
-};
-
-export const assembleAnimalContextForUpdate = (req, res, next) => {
-  try {
-    const {
-      species,
-      colors,
-      sex,
-      size,
-      breed,
-      features,
-      location,
-      date,
-      description,
-      city,
-      district,
-      address,
-    } = req.body;
-
-    if (species || colors || sex || size || breed || features) {
-      req.body.animal = {
-        ...(species !== undefined && { species }),
-        ...(colors !== undefined && { colors }),
-        ...(sex !== undefined && { sex }),
-        ...(size !== undefined && { size }),
-        ...(breed !== undefined && { breed }),
-        ...(features !== undefined && { features }),
-      };
-    }
-
-    if (location || date || description) {
-      const context = {};
-
-      if (
-        location &&
-        location.lat !== undefined &&
-        location.lng !== undefined
-      ) {
-        context.location = {
-          type: 'Point',
-          coordinates: [location.lng, location.lat],
-          city: city || undefined,
-          district: district || '',
-          address: address || '',
-        };
-      }
-
-      if (date) context.date = new Date(date);
-      if (description !== undefined) context.description = description;
-
-      req.body.context = context;
-    }
-
-    next();
-  } catch (err) {
-    console.error('assembleAnimalContextForUpdate error:', err.message);
-    res.status(400).json({ message: 'Invalid request data' });
   }
 };
