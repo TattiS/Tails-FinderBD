@@ -8,23 +8,6 @@ import {
 } from '../constants/animalEnums.js';
 
 export const createAdvertSchema = Joi.object({
-  photos: Joi.array()
-    .items(
-      Joi.object({
-        originalname: Joi.string().required(),
-        mimetype: Joi.string().required(),
-        path: Joi.string().required(),
-        size: Joi.number().required(),
-      }),
-    )
-    .min(1)
-    .max(4)
-    .required()
-    .messages({
-      'array.min': 'Додайте хоча б одне фото',
-      'array.max': 'Максимум 4 фото',
-      'any.required': 'Додайте фото',
-    }),
   tags: Joi.array().items(Joi.string()).optional(),
   status: Joi.string()
     .valid(...STATUS)
@@ -66,22 +49,6 @@ export const createAdvertSchema = Joi.object({
 
 // Для валідації при оновленні оголошення
 export const updateAdvertSchema = Joi.object({
-  photos: Joi.array()
-    .items(
-      Joi.object({
-        originalname: Joi.string().required(),
-        mimetype: Joi.string().required(),
-        path: Joi.string().required(),
-        size: Joi.number().required(),
-      }),
-    )
-    .min(1)
-    .max(4)
-    .optional()
-    .messages({
-      'array.min': 'Додайте хоча б одне фото',
-      'array.max': 'Максимум 4 фото',
-    }),
   tags: Joi.array().items(Joi.string()).optional(),
   status: Joi.string()
     .valid(...STATUS)

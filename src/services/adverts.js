@@ -44,7 +44,6 @@ export const createAdvertService = async (data, files = []) => {
   if (data.context?.location?.coordinates) {
     const [lng, lat] = data.context.location.coordinates; // без додаткового .coordinates
     const address = await reverseGeocode(lat, lng);
-    console.log(address);
     data.context.location = {
       ...data.context.location,
       ...address,

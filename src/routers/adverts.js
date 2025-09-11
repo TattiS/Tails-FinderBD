@@ -4,7 +4,6 @@ import { authenticate } from '../middlewares/authenticate.js';
 import { upload } from '../middlewares/multer.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { checkUpdateData } from '../middlewares/checkUpdateData.js';
-import { filesToBody } from '../middlewares/filesToBody.js';
 import { extractNotifications } from '../middlewares/extractNotifications.js';
 import { assembleAnimalContext } from '../middlewares/assembleAnimalContext.js';
 import {
@@ -32,7 +31,6 @@ router.post(
   '/',
   authenticate,
   upload.array('photos', 4),
-  // filesToBody,
   parseJsonFields(['colors', 'location']),
   extractNotifications,
   assembleAnimalContext,
@@ -46,7 +44,6 @@ router.patch(
   authenticate,
   upload.array('photos', 4),
   checkUpdateData,
-  filesToBody,
   validateBody(updateAdvertSchema, { optionalFields: ['animal', 'context'] }),
   ctrlWrapper(updateAdvertController),
 );
