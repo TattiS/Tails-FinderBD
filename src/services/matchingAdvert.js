@@ -3,11 +3,11 @@ import { Advert } from '../models/advertSchema.js';
 export const findMatchingAdvertsService = async (advert) => {
   const oppositeType = advert.status === 'lost' ? 'found' : 'lost';
 
-  if (!advert.context?.location?.coordinates?.coordinates) {
+  if (!advert.context?.location?.coordinates) {
     return []; // якщо немає координат — пошук неможливий
   }
 
-  const [longitude, latitude] = advert.context.location.coordinates.coordinates;
+  const [longitude, latitude] = advert.context.location.coordinates;
 
   // Знаходимо потенційні збіги за базовими критеріями
   const potentialMatches = await Advert.find({
@@ -38,5 +38,8 @@ export const findMatchingAdvertsService = async (advert) => {
 
   matchesWithScore.sort((a, b) => b.score - a.score);
 
-  return matchesWithScore.map((item) => item.advert);
+  // const topMatches = matchesWithScore.slice(0, 10);
+  const results = matchesWithScore.map((item) => item.advert);
+
+  return results;
 };

@@ -99,10 +99,8 @@ export const getAdvertByIdController = async (req, res, next) => {
 // POST /adverts
 export const createAdvertController = async (req, res) => {
   const data = req.body;
-  data.user = req.user._id; // автор з authenticate
+  data.user = req.user._id;
   data.notificationsAllowed = data.notificationsAllowed === 'true';
-
-  console.log('Data: ', data);
 
   const newAdvert = await createAdvertService(data, req.files || []);
 
@@ -113,6 +111,7 @@ export const createAdvertController = async (req, res) => {
   }
 
   const matches = await findMatchingAdvertsService(newAdvert);
+
   if (matches.length > 0) {
     await notifyUsersService(matches, newAdvert);
   }

@@ -4,7 +4,7 @@ export const validateBody =
   (schema, options = {}) =>
   async (req, res, next) => {
     try {
-      // Автоматично парсимо JSON-поля у req.body, якщо вони прийшли як рядки
+      // Перетворення JSON-рядків у об'єкти
       for (const key in req.body) {
         if (typeof req.body[key] === 'string') {
           try {
@@ -16,7 +16,6 @@ export const validateBody =
         }
       }
 
-      // Валідація через Joi
       await schema.validateAsync(req.body, { abortEarly: false, ...options });
 
       next();

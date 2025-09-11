@@ -11,8 +11,17 @@ cloudinary.config({
 });
 
 export const saveFileToCloudinary = async (file) => {
-  const response = await cloudinary.uploader.upload(file.path);
-  await fs.unlink(file.path); // видаляємо тимчасовий файл після завантаження
-  console.log('Cloudinary response:', response);
-  return response.secure_url;
+  try {
+    const response = await cloudinary.uploader.upload(file.path, {
+      resource_type: 'auto',
+      folder: 'adverts',
+    });
+
+    return response.secure_url;
+  } catch (error) {
+    console.error('Cloudinary upload error:', error);
+    throw error;
+  } finally {
+    await fs.unlink(file.path);
+  }
 };

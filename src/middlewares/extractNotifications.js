@@ -3,5 +3,6 @@ export const extractNotifications = (req, res, next) => {
     req.notificationsAllowed = req.body.notificationsAllowed;
     delete req.body.notificationsAllowed;
   }
+
   next();
 };

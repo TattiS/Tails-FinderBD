@@ -42,7 +42,7 @@ export const getAdvertByIdService = async (id) => {
 // Створити нове оголошення
 export const createAdvertService = async (data, files = []) => {
   if (data.context?.location?.coordinates) {
-    const [lng, lat] = data.context.location.coordinates; // без додаткового .coordinates
+    const [lng, lat] = data.context.location.coordinates;
     const address = await reverseGeocode(lat, lng);
     data.context.location = {
       ...data.context.location,
@@ -51,15 +51,9 @@ export const createAdvertService = async (data, files = []) => {
   }
 
   if (files.length > 0) {
-    const results = await Promise.allSettled(
-      files.map((file) => saveFileToCloudinary(file.path, 'adverts')),
-    );
-
-    const photosUrls = results
-      .filter((res) => res.status === 'fulfilled')
-      .map((res) => res.value);
-
-    data.photos = photosUrls;
+    // const results = await Promise.allSettled(
+    //   files.map((file) => saveFileToCloudinary(file.path, 'adverts')),
+    // );
 
     // Аналіз фото через Vision API паралельно
     const tagsResults = await Promise.allSettled(
@@ -72,6 +66,14 @@ export const createAdvertService = async (data, files = []) => {
       .forEach((res) => res.value.forEach((tag) => tagsSet.add(tag)));
 
     data.tags = Array.from(tagsSet);
+
+    const results = [];
+    for (const file of files) {
+      const url = await saveFileToCloudinary(file);
+      results.push(url);
+    }
+
+    data.photos = [...results];
   }
 
   const newAdvert = await Advert.create(data);
@@ -89,7 +91,7 @@ export const updateAdvertService = async (id, data, files = []) => {
   if (data.context?.location?.coordinates.length === 2) {
     const [lng, lat] = data.context.location.coordinates; // [lng, lat]
     const address = await reverseGeocode(lat, lng);
-    console.log(address);
+
     data.context.location = {
       ...data.context.location,
       ...address,
